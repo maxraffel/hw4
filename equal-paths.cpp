@@ -18,7 +18,7 @@ bool equalPaths(Node * root)
 }
 
 bool pathExplorer(Node* root, int level, int& highestLevel) {
-    if (root == nullptr) return false; // this should never happen
+    if (root == nullptr) return true; // this means we were given an empty tree
     // if leaf
     if (root->left == nullptr && root->right == nullptr) {
         // if first leaf found set the path length
