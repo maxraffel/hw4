@@ -666,8 +666,8 @@ int BinarySearchTree<Key, Value>::balancedHelper(Node<Key, Value>* node, bool& f
     if (node == nullptr || flag == true) {
         return 0;
     } else {
-        int rightHeight = balancedHelper(node->getRight());
-        int leftHeight = balancedHelper(node->getLeft());
+        int rightHeight = balancedHelper(node->getRight(), flag);
+        int leftHeight = balancedHelper(node->getLeft(), flag);
         if (abs(rightHeight - leftHeight) > 1) {
             flag = true;
         }
