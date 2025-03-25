@@ -249,6 +249,9 @@ protected:
     // Add helper functions here
     static Node<Key, Value>* predecessUp(Node<Key, Value>* current);
     static Node<Key, Value>* predecessDown(Node<Key, Value>* current);
+
+    static Node<Key, Value>* successor(Node<Key, Value>* current);
+
     void deleteHelper(Node<Key, Value>* current);
     int balancedHelper(Node<Key, Value>* node, bool& flag) const;
 
@@ -342,30 +345,8 @@ BinarySearchTree<Key, Value>::iterator::operator++()
     //     std::cout << "incremented null iterator" << std::endl;
     // }
     // TODO
-    if (current_->getRight() != nullptr) {
-        // std::cout << "leftmost of right" << std::endl;
-        // find leftmost node of right tree
-        Node<Key, Value>* nextNode = current_->getRight();
-        while (nextNode->getLeft() != nullptr) {
-            nextNode = nextNode->getLeft();
-        }
-        current_ = nextNode;
-        return *this;
-    } else {
-        // std::cout << "looking for left parent" << std::endl;
-        // go up until parent
-        Node<Key, Value>* parent = current_;
-        while (parent->getParent() != nullptr) {
-            if (parent->getParent()->getLeft() == parent) {
-                current_ = parent->getParent();
-                return *this;
-            } else {
-                parent = parent->getParent();
-            }
-        }
-        current_ = nullptr;
-        return *this;
-    }
+    current_ = successor(current_);
+    return *this;
 }
 
 
@@ -608,6 +589,33 @@ BinarySearchTree<Key, Value>::predecessor(Node<Key, Value>* current)
         return predecessUp(current);
     } else {
         return predecessDown(left);
+    }
+}
+
+template<class Key, class Value>
+Node<Key, Value>*
+BinarySearchTree<Key, Value>::successor(Node<Key, Value>* current) 
+{
+    if (current->getRight() != nullptr) {
+        // std::cout << "leftmost of right" << std::endl;
+        // find leftmost node of right tree
+        Node<Key, Value>* nextNode = current->getRight();
+        while (nextNode->getLeft() != nullptr) {
+            nextNode = nextNode->getLeft();
+        }
+        return nextNode;
+    } else {
+        // std::cout << "looking for left parent" << std::endl;
+        // go up until parent
+        Node<Key, Value>* parent = current;
+        while (parent->getParent() != nullptr) {
+            if (parent->getParent()->getLeft() == parent) {
+                return parent->getParent();
+            } else {
+                parent = parent->getParent();
+            }
+        }
+        return nullptr;
     }
 }
 

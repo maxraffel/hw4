@@ -63,6 +63,12 @@ int main(int argc, char *argv[])
     }
     cout << "Erasing b" << endl;
     at.remove('b');
+    if(at.find('b') != at.end()) {
+        cout << "Found b" << endl;
+    }
+    else {
+        cout << "Did not find b" << endl;
+    }
 
     return 0;
 }
