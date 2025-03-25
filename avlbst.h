@@ -318,7 +318,9 @@ void AVLTree<Key, Value>::remove(const Key& key)
 
     if (parent == nullptr) {
         this->root_ = nextNode;
-        nextNode->setParent(nullptr);
+        if (nextNode != nullptr) {
+            nextNode->setParent(parent);
+        }
         delete deleteNode;
         return;
     }
@@ -345,7 +347,7 @@ void AVLTree<Key, Value>::remove(const Key& key)
 template<class Key, class Value>
 void AVLTree<Key,Value>::removeFix(AVLNode<Key,Value>* node, int diff) {
     if (node == nullptr) return;
-    int nDiff;
+    int nDiff = 0;
     AVLNode<Key,Value>* nParent = node->getParent();
     if (nParent != nullptr) {
         if (nParent->getLeft() == node) {
@@ -363,12 +365,17 @@ void AVLTree<Key,Value>::removeFix(AVLNode<Key,Value>* node, int diff) {
             c = node->getRight();
         }
 
+        if (c == nullptr) {
+            // removeFix here?
+            return;
+        }
+
         if (c->getBalance() == diff) { // zig zig
             pRotate(node, -diff);
             node->setBalance(0);
             c->setBalance(0);
             removeFix(nParent, nDiff);
-        } else if (node->getBalance() == diff) {
+        } else if (c->getBalance() == 0) {
             pRotate(node, -diff);
             node->setBalance(diff);
             c->setBalance(-diff);
