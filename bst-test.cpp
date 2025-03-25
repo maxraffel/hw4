@@ -32,6 +32,20 @@ int main(int argc, char *argv[])
         cout << "Did not find b" << endl;
     }
 
+    BinarySearchTree<int, double> bst;
+	bst.insert(std::make_pair(3, 1.0));
+	bst.insert(std::make_pair(2, 1.0));
+	bst.insert(std::make_pair(1, 1.0));
+    cout << "Binary Search Tree contents1:" << endl;
+    for(BinarySearchTree<int,double>::iterator it = bst.begin(); it != bst.end(); ++it) {
+        cout << it->first << " " << it->second << endl;
+    }
+	bst.remove(3);
+    cout << "Binary Search Tree contents2:" << endl;
+    for(BinarySearchTree<int,double>::iterator it = bst.begin(); it != bst.end(); ++it) {
+        cout << it->first << " " << it->second << endl;
+    }
+
     // AVL Tree Tests
     AVLTree<char,int> at;
     at.insert(std::make_pair('a',1));

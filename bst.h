@@ -314,7 +314,7 @@ BinarySearchTree<Key, Value>::iterator::operator==(
     const BinarySearchTree<Key, Value>::iterator& rhs) const
 {
     // TODO
-    return current_ == rhs.current_;
+    return this->current_ == rhs.current_;
 }
 
 /**
@@ -327,7 +327,7 @@ BinarySearchTree<Key, Value>::iterator::operator!=(
     const BinarySearchTree<Key, Value>::iterator& rhs) const
 {
     // TODO
-    return current_ != rhs.current_;
+    return this->current_ != rhs.current_;
 }
 
 
@@ -338,8 +338,12 @@ template<class Key, class Value>
 typename BinarySearchTree<Key, Value>::iterator&
 BinarySearchTree<Key, Value>::iterator::operator++()
 {
+    // if (current_ == nullptr) {
+    //     std::cout << "incremented null iterator" << std::endl;
+    // }
     // TODO
     if (current_->getRight() != nullptr) {
+        // std::cout << "leftmost of right" << std::endl;
         // find leftmost node of right tree
         Node<Key, Value>* nextNode = current_->getRight();
         while (nextNode->getLeft() != nullptr) {
@@ -348,6 +352,7 @@ BinarySearchTree<Key, Value>::iterator::operator++()
         current_ = nextNode;
         return *this;
     } else {
+        // std::cout << "looking for left parent" << std::endl;
         // go up until parent
         Node<Key, Value>* parent = current_;
         while (parent->getParent() != nullptr) {
@@ -525,8 +530,11 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
 
     if (current->getRight() != nullptr && current->getLeft() != nullptr) {
         // two children so guaranteed to have predecessor
+        // std::cout << "Swap" << std::endl;
         nodeSwap(current, predecessor(current));
     }
+
+    // std::cout << current->getParent() << " parent" << std::endl;
 
     // now should be guaranteed one or no children
     Node<Key, Value>* parent = current->getParent();
@@ -536,22 +544,24 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
         child = current->getRight();
     } else {
         // it is ok if getRight is null
-        child = current->getRight();
+        child = current->getLeft();
     }
 
-
     if (parent == nullptr) {
-        delete root_;
+        // std::cout << "parent" << current->getLeft() << " " << current->getRight() << " " << child << std::endl;
         root_ = child;
+        child->setParent(nullptr);
     } else {
-        if (parent->getLeft() != nullptr && parent->getLeft()->getKey() == key) {
-            delete parent->getLeft();
+        // if node we are deleting is the left child of its parent
+        if (parent->getLeft() != nullptr && parent->getLeft()->getKey() == current->getKey()) {
+            // std::cout << "left" << std::endl;
             parent->setLeft(child);
         } else {
-            delete parent->getRight();
+            // std::cout << "right" << std::endl;
             parent->setRight(child);
         }
     }
+    delete current;
 }
 
 template<class Key, class Value>
