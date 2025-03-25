@@ -550,7 +550,10 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
     if (parent == nullptr) {
         // std::cout << "parent" << current->getLeft() << " " << current->getRight() << " " << child << std::endl;
         root_ = child;
-        child->setParent(nullptr);
+        if (child != nullptr) {
+            child->setParent(nullptr);
+        }
+        
     } else {
         // if node we are deleting is the left child of its parent
         if (parent->getLeft() != nullptr && parent->getLeft()->getKey() == current->getKey()) {
