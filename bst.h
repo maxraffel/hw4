@@ -563,6 +563,9 @@ void BinarySearchTree<Key, Value>::remove(const Key& key)
             // std::cout << "right" << std::endl;
             parent->setRight(child);
         }
+        if (child != nullptr) {
+            child->setParent(parent);
+        }
     }
     delete current;
 }
