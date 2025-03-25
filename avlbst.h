@@ -387,9 +387,9 @@ void AVLTree<Key,Value>::removeFix(AVLNode<Key,Value>* node, int diff) {
         } else { // zig zag (-diff)
             AVLNode<Key,Value>* g;
             if (diff == 1) {
-                g = node->getLeft();
+                g = c->getLeft();
             } else {
-                g = node->getRight();
+                g = c->getRight();
             }
 
             pRotate(c, diff);
