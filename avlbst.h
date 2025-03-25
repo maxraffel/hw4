@@ -151,6 +151,8 @@ void AVLTree<Key, Value>::rightRotate(AVLNode<Key,Value>* node) {
     AVLNode<Key, Value>* child = node->getLeft();
     AVLNode<Key, Value>* parent = node->getParent();
 
+    if (child == nullptr) return;
+
     node->setLeft(child->getRight());
     if (child->getRight() != nullptr) {
         child->getRight()->setParent(node);
@@ -176,6 +178,7 @@ void AVLTree<Key, Value>::leftRotate(AVLNode<Key,Value>* node) {
     if (node == nullptr) return;
     AVLNode<Key, Value>* child = node->getRight();
     AVLNode<Key, Value>* parent = node->getParent();
+    if (child == nullptr) return;
     node->setRight(child->getLeft());
     if (child->getLeft() != nullptr) {
         child->getLeft()->setParent(node);
@@ -223,6 +226,8 @@ void AVLTree<Key, Value>::insertFix(AVLNode<Key,Value>* parent, AVLNode<Key,Valu
         if (parent->getLeft() == node) childSide = -1;
         if (childSide == side) { // zig zig
             pRotate(grandParent, -side);
+            parent->setBalance(0);
+            grandParent->setBalance(0);
         } else { // zig zag
             pRotate(parent, side);
             pRotate(grandParent, -side);
